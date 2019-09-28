@@ -1,4 +1,5 @@
 from selenium import webdriver
+from collections import OrderedDict
 import csv
 
 driver = webdriver.Chrome('./chromedriver')
@@ -62,28 +63,7 @@ with open('result.csv', mode='w') as result:
         records = table.find_elements_by_tag_name('tr')
         print(len(records))
         for record in records:
-            new_row = {
-                'community_name': '',
-                'street_address': '',
-                'city': '',
-                'state': '',
-                'zip': '',
-                'phone': '',
-                'administrator': '',
-                'owner_company': '',
-                'owner_street_address': '',
-                'owner_city': '',
-                'owner_state': '',
-                'owner_zip': '',
-                'owner_phone': '',
-                'facility_license_number': '',
-                'status': '',
-                'number_of_beds': '',
-                'date_of_last_survey': '',
-                'date_of_original_licensure': '',
-                'date_of_expiration': '',
-                'disciplinary_actions': ''
-            }
+            new_row = OrderedDict()
             first_item = record.find_elements_by_tag_name('td')[1]
             second_item = record.find_elements_by_tag_name('td')[2]
             third_item = record.find_elements_by_tag_name('td')[3]
@@ -153,7 +133,9 @@ with open('result.csv', mode='w') as result:
                 new_row['date_of_expiration'] = ''
                 new_row['disciplinary_actions'] = ''
 
+            print(new_row)
             csv_writer.writerow([item[1] for item in new_row.items()])
+            print([item[1] for item in new_row.items()])
 
         return_button = driver.find_element_by_xpath(
             '//*[@id="MainContent"]/div[1]/div[2]/a')
